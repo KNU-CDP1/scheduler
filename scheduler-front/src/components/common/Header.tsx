@@ -1,6 +1,7 @@
-import { Link as LinkUI, Center, Flex, Heading, HStack } from "@chakra-ui/react";
+import { Center, Flex, Heading, HStack } from "@chakra-ui/react";
 import React from "react";
 import { Link } from "react-router-dom";
+import StyledLink from "./StyledLink";
 
 const Header: React.FC<{}> = () => {
   return (
@@ -10,15 +11,18 @@ const Header: React.FC<{}> = () => {
       </Center>
 
       <HStack spaceX={10} mr={"4%"}>
-        <LinkUI color={"white"} _hover={{ color: "red.emphasized" }}>
+        <StyledLink>
           <Link to="/">DashBoard</Link>
-        </LinkUI>
-        <LinkUI color={"white"} _hover={{ color: "red.emphasized" }}>
+        </StyledLink>
+        <StyledLink>
           <Link to="/map">Map</Link>
-        </LinkUI>
-        <LinkUI color={"white"} _hover={{ color: "red.emphasized" }}>
+        </StyledLink>
+        <StyledLink>
           <Link to="/history">History</Link>
-        </LinkUI>
+        </StyledLink>
+        <StyledLink>
+          <Link to="/setting">Setting</Link>
+        </StyledLink>
       </HStack>
     </Flex>
   );

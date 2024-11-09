@@ -19,3 +19,12 @@ interface DashBoard {
   risk: number;
   status: "Completed" | "In Flight" | "Delayed" | "Cancelled" | "Scheduled";
 }
+
+interface UploadHistory {
+  title: string;
+  author: string;
+  // uploadDate: Date;
+  uploadDate: string;
+  details: string;
+  csv: string;
+}

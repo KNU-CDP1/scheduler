@@ -6,6 +6,9 @@ const Map: React.FC<{}> = () => {
   return (
     <Layout>
       <Heading>Hello, world! Map</Heading>
+      <Box>
+        <Heading size={"4xl"}>지도</Heading>
+      </Box>
     </Layout>
   );
 };
