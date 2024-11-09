@@ -17,5 +17,5 @@ interface DashBoard {
   arrival: string;
   weather: string; // ? fix
   risk: number;
-  status: "Completed" | "InFlight" | "Delayed" | "Cancelled";
+  status: "Completed" | "In Flight" | "Delayed" | "Cancelled" | "Scheduled";
 }
