@@ -110,7 +110,7 @@ const DashBoard: React.FC<{}> = () => {
     if (file) {
       console.log("Selected file:", file.name);
     }
- };
+  };
 
   // Function to trigger the hidden input when the button is clicked
   const triggerFileUpload = () => {
