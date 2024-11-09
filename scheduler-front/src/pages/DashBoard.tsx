@@ -161,7 +161,7 @@ const DashBoard: React.FC<{}> = () => {
         <Flex gap={4}>
           <Button onClick={() => setFilter("All")} colorScheme={filter === 'All' ? 'teal' : 'gray'}>All Flights</Button>
           <Button onClick={() => setFilter("Scheduled")} colorScheme={filter === 'Scheduled' ? 'teal' : 'gray'}>Scheduled</Button>
-          <Button onClick={() => setFilter("In Flight")} colorScheme={filter === 'In Flight' ? 'teal' : 'gray'}>In Progress</Button>
+          <Button onClick={() => setFilter("In Flight")} colorScheme={filter === 'In Flight' ? 'teal' : 'gray'}>In Flight</Button>
           <Button onClick={() => setFilter("Completed")} colorScheme={filter === 'Completed' ? 'teal' : 'gray'}>Completed</Button>
         </Flex>
 
