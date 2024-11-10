@@ -1,0 +1,149 @@
+/* General Styles */
+body {
+    font-family: 'Arial', sans-serif;
+    background-color: #181818; /* Dark background */
+    color: white;
+}
+
+.dashboard-container {
+    margin-top: 10px;
+    width: 100%;
+    height: 80vh;
+    position: relative;
+}
+
+/* Header */
+.dashboard-header {
+    width: 100%;
+    justify-content: space-between;
+    align-items: center;
+    padding-top: 10px;
+    padding-bottom: 10px;
+}
+
+.dashboard-header h2 {
+    font-size: 40px;
+    font-weight: bold;
+    color: white;
+}
+
+.navbar {
+    display: flex;
+    gap: 20px;
+}
+
+.navbar a {
+    color: #00FFB3; /* Bright teal for active link */
+    text-decoration: none;
+}
+
+.navbar a:hover {
+    text-decoration: underline;
+}
+
+/* Upload Button */
+.upload-button {
+    background-color: #2D2D2D; /* Darker gray */
+    color: white;
+    border-radius: 20px; /* Rounded corners */
+    padding: 8px 16px;
+}
+
+.upload-button:hover {
+    background-color: #404040; /* Slightly lighter on hover */
+}
+
+/* Filter Buttons */
+.filter-buttons {
+    margin-top: 16px;
+    gap: 16px;
+}
+
+.filter-buttons button {
+    background-color: #2D2D2D; /* Darker background */
+    color: white;
+    border-radius: 20px; /* More rounded corners */
+    padding: 8px 16px;
+}
+
+.filter-buttons button:hover {
+    background-color: #404040; /* Slightly lighter on hover */
+}
+
+/* Active Filter Button Styling */
+.filter-buttons button.active {
+    background-color: #00FFB3; /* Teal for active filter button */
+}
+
+/* Search Bar Styling */
+.search-bar {
+    background-color: #2D2D2D; /* Darker gray background */
+    color: white;
+    border-radius: 20px; /* Rounded corners to match buttons */
+    padding-left: 16px;
+}
+
+/* Table Styling */
+.table-header th {
+    background-color: #1F1F1F; /* Darker header background */
+    color: white;
+    padding: 12px; /* Add more padding for better spacing */
+}
+
+.table-row {
+    padding-top: 10px; 
+}
+
+.table-row:nth-child(even) {
+    background-color: #2A2A2A; /* Dark gray for even rows */
+}
+
+.table-row:nth-child(odd) {
+    background-color: #333333; /* Slightly lighter gray for odd rows */
+}
+
+/* Status Colors */
+.status-delayed {
+    color: #FF4C4C; /* Bright red for delayed flights */
+}
+
+/* Risk Progress Bar Styling */
+.risk-bar-container {
+   width: 100px;
+   margin-left: 8px;
+   background-color: #404040; /* Gray bar container */
+   height: 6px;
+   border-radius: 4px;
+}
+
+.risk-bar-fill {
+   height: 100%;
+   border-radius: 4px;
+   background-color: green; /* Green by default, change dynamically based on risk percentage */
+}
+
+/* Weather Widget Styling */
+.weather-widget {
+   position: relative;
+   bottom: 20px;
+   right: 20px;
+   background-color: #2D2D2D; 
+   padding: 16px;
+   border-radius: 12px; /* Rounded corners */
+   margin-top: 50px;
+   align-self:flex-end
+}
+
+.weather-widget .time-display {
+   font-size: 24px;
+   font-weight:bold
+}
+
+/* Weather Icon and Text Styling in Widget*/
+.weather-widget .weather-info {
+   display:flex;
+   align-items:center
+}
+.weather-widget .weather-info svg { 
+   margin-right :10px 
+}
