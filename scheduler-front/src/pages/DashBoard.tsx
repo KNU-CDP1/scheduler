@@ -1,12 +1,13 @@
-import { VStack, Button, Box, Flex, Heading, Table, Text, Input } from "@chakra-ui/react";
+import { VStack, Button, Flex, Heading, Input } from "@chakra-ui/react";
 import React from "react";
-import { useRef, useState, useEffect } from "react";
+import { useRef, useState } from "react";
 import Layout from "../components/layout/Layout";
+import DTable from "../components/dashboard/DTable";
+import WeatherWidget from "../components/dashboard/WeatherWidget";
 import { HiUpload } from "react-icons/hi";
-import { FaCloud, FaCloudSun, FaCloudRain, FaSun, FaSnowflake, FaWind } from "react-icons/fa";
 import './Dashboard.css';
 
-const mockData: DashBoard[] = [
+const mockData: FlightDataType[] = [
   {
     flight: "SKY101",
     passengers: 2,
@@ -64,42 +65,9 @@ const mockData: DashBoard[] = [
   },
 ];
 
-// Function to map weather conditions to icons
-const getWeatherIcon = (weather: string) => {
-  switch (weather.toLowerCase()) {
-    case "sunny":
-      return <FaSun size={24} color="#FFD700" />;
-    case "rainy":
-      return <FaCloudRain size={24} color="#00BFFF" />;
-    case "cloudy":
-      return <FaCloud size={24} color="#B0C4DE" />;
-    case "snowy":
-      return <FaSnowflake size={24} color="#ADD8E6" />;
-    case "windy":
-      return <FaWind size={24} color="#A9A9A9" />;
-    case "semi_cloudy":
-      return <FaCloudSun size={24} color="#B0C4DE" />
-    default:
-      return <FaSun size={24} color="#FFD700" />;
-  }
-};
-
 const DashBoard: React.FC<{}> = () => {
   const [filter, setFilter] = useState("All");
   const [searchQuery, setSearchQuery] = useState("");
-
-  // State to store current date and time
-  const [currentTime, setCurrentTime] = useState(new Date());
-
-  // Update time every second
-  useEffect(() => {
-    const timer = setInterval(() => {
-      setCurrentTime(new Date());
-    }, 1000); // Update every second
-
-    // Cleanup interval on component unmount
-    return () => clearInterval(timer);
-  }, []);
 
   // Ref for the hidden file input element
   const fileInputRef = useRef<HTMLInputElement>(null);
@@ -134,7 +102,7 @@ const DashBoard: React.FC<{}> = () => {
     let matchesSearch = data.flight.toLowerCase().includes(searchQuery.toLowerCase());
 
     return matchesFilter && matchesSearch;
- });
+  });
 
    return (
    <Layout>
@@ -174,80 +142,12 @@ const DashBoard: React.FC<{}> = () => {
         />
       </Flex>
 
-      {/* Table */}
-      <Table.Root mt={4}>
-        <Table.Header className="table-header">
-          <Table.Row border={"1px white"}>
-            <Table.ColumnHeader><Text>Flight</Text></Table.ColumnHeader>
-            <Table.ColumnHeader><Text>Passengers</Text></Table.ColumnHeader>
-            <Table.ColumnHeader><Text>Seats</Text></Table.ColumnHeader>
-            <Table.ColumnHeader><Text>Cost</Text></Table.ColumnHeader>
-            <Table.ColumnHeader><Text>Departure</Text></Table.ColumnHeader>
-            <Table.ColumnHeader><Text>Arrival</Text></Table.ColumnHeader>
-            <Table.ColumnHeader><Text>Weather</Text></Table.ColumnHeader>
-            <Table.ColumnHeader><Text>Risk</Text></Table.ColumnHeader>
-            <Table.ColumnHeader><Text>Status</Text></Table.ColumnHeader>
-          </Table.Row>
-        </Table.Header>
-        
-        <Table.Body>
-          {filteredData.map((data, idx) => (
-            <Table.Row key={idx} className="table-row">
-              <Table.Cell>{data.flight}</Table.Cell>
-              <Table.Cell>{data.passengers}</Table.Cell>
-              <Table.Cell>{data.seats}</Table.Cell>
-              <Table.Cell>${data.cost}</Table.Cell>
+      {/*Table*/}
+      <DTable flightData={filteredData} />
 
-              {/* Departure Time */}
-              <Table.Cell className={data.status === "Delayed" ? "status-delayed" : ""}>
-                {data.departure}
-              </Table.Cell>
+      {/*WeatherWidget*/}
+      {<WeatherWidget />}
 
-              {/* Arrival Time */}
-              <Table.Cell className={data.status === "Completed" ? "status-completed" : ""}>
-                {data.arrival}
-              </Table.Cell>
-
-              {/* Weather with temperature */}
-              <Table.Cell>{data.weather}</Table.Cell>
-
-              {/* Risk bar */}
-              <Table.Cell display="flex" alignItems="center">
-                {data.risk}%
-                {/* Example of a simple progress bar */}
-                <div style={{ width:"100px", marginLeft:"8px", backgroundColor:"#ccc", height:"6px", borderRadius:"4px"}}>
-                  <div style={{ width:`${data.risk}%`, backgroundColor:data.risk >50?"red":"green", height:"100%", borderRadius:"4px"}}></div>
-                </div>
-              </Table.Cell>
-
-              {/* Status with different colors or badges */}
-              <Table.Cell>{data.status}</Table.Cell>
-            </Table.Row>
-          ))}
-        </Table.Body>
-      </Table.Root>
-
-      {/* Weather Widget - Positioned at the bottom right */}
-      <Box className="weather-widget">
-        {/* Display formatted date */}
-        <Text fontSize="lg" color="gray.400">
-          {currentTime.toLocaleDateString("en-GB", { weekday: "long", year: "numeric", month: "short", day: "numeric" })}
-        </Text>
-        
-        {/* Display formatted time */}
-        <Text fontSize="2xl" fontWeight="bold" color="white">
-          {currentTime.toLocaleTimeString("en-US", { hour: 'numeric', minute: 'numeric', hour12: true })}
-        </Text>
-
-        {/* Weather Info */}
-        <Flex alignItems="center" mt={2}>
-          {getWeatherIcon("cloudy")}
-          <Box ml={2}>
-            <Text fontSize="lg" color="white">Cloudy 25°C</Text>
-            <Text fontSize="sm" color="gray.400">rain chance -10%</Text>
-          </Box>
-        </Flex>
-      </Box>
     </VStack>
   </Layout>
    );
