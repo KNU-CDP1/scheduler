@@ -7,6 +7,7 @@ import { BrowserRouter, Route, Routes } from "react-router-dom";
 import DashBoard from "./pages/DashBoard";
 import Map from "./pages/Map";
 import History from "./pages/History";
+import Setting from "./pages/Setting";
 
 function App() {
   return (
@@ -17,6 +18,7 @@ function App() {
             <Route path="/" element={<DashBoard />} />
             <Route path="/map" element={<Map />} />
             <Route path="/history" element={<History />} />
+            <Route path="/setting" element={<Setting />} />
           </Routes>
         </ChakraProvider>
       </BrowserRouter>
