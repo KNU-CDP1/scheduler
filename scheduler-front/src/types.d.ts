@@ -28,3 +28,9 @@ interface UploadHistory {
   details: string;
   csv: string;
 }
+
+interface ScheduleParams {
+  delayCost: number;
+  cancelCost: number;
+  riskAlpha: number;
+}

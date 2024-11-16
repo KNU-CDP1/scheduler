@@ -4,8 +4,8 @@ import { FiPlus, FiMinus } from "react-icons/fi";
 
 const Setting: React.FC<{}> = () => {
   // importance
-  const [cancelCostRatio, setCancelCostRatio] = useState<number>(20);
-  const [delayCostRatio, setDelayCostRatio] = useState<number>(20);
+  // const [cancelCostRatio, setCancelCostRatio] = useState<number>(20);
+  // const [delayCostRatio, setDelayCostRatio] = useState<number>(20);
   const [riskRatio, setRiskRatio] = useState<number>(20);
 
   // penalty
@@ -91,7 +91,7 @@ const Setting: React.FC<{}> = () => {
           </Card.Header>
           <Card.Body>
             <VStack w={"100%"} gap={4}>
-              <Slider.Root
+              {/* <Slider.Root
                 {...sliderStyleProps}
                 value={[cancelCostRatio]}
                 onValueChange={(e) => setCancelCostRatio(e.value[0])}
@@ -130,7 +130,7 @@ const Setting: React.FC<{}> = () => {
                     <Slider.HiddenInput />
                   </Slider.Thumb>
                 </Slider.Control>
-              </Slider.Root>
+              </Slider.Root> */}
               <Slider.Root {...sliderStyleProps} value={[riskRatio]} onValueChange={(e) => setRiskRatio(e.value[0])}>
                 <Slider.Label>
                   <Flex justifyContent={"space-between"}>
