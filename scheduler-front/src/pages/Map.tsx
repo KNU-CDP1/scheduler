@@ -1,14 +1,17 @@
-import { Box, Heading } from "@chakra-ui/react";
+import { Box, Container, Flex, Heading } from "@chakra-ui/react";
 import React from "react";
 import Layout from "../components/layout/Layout";
+import FlightMap from "../components/map/FlightMap";
 
 const Map: React.FC<{}> = () => {
   return (
     <Layout>
-      <Heading>Hello, world! Map</Heading>
-      <Box>
-        <Heading size={"4xl"}>지도</Heading>
-      </Box>
+      <Flex>
+        <Heading size={"3xl"}>Flight Map</Heading>
+      </Flex>
+      <Container h={"70vh"}>
+        <FlightMap></FlightMap>
+      </Container>
     </Layout>
   );
 };

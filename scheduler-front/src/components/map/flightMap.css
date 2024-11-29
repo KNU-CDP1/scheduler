@@ -1,0 +1,87 @@
+.relation-graph {
+  .rel-map {
+    background: none !important;
+    .rel-node-shape-1 {
+    }
+  }
+  .rel-toolbar {
+    color: #ffffff;
+    .c-current-zoom {
+      color: #ffffff;
+    }
+  }
+  .rel-node-shape-0 {
+    display: flex;
+    place-items: center;
+    justify-content: center;
+  }
+  .rel-node-checked {
+    box-shadow: 0 0 0 8px #fad148;
+    svg {
+      fill: #fad148;
+    }
+  }
+  .rel-node-flashing {
+    animation: none;
+  }
+}
+.my-graph {
+  background: linear-gradient(to right, rgb(16, 185, 129), rgb(101, 163, 13));
+}
+
+.my-line-style-1 .c-rg-line-checked {
+  animation: my-line-anm1 1s infinite;
+}
+.my-line-style-2 .c-rg-line-checked {
+  animation: my-line-anm2 1s infinite;
+}
+.my-line-style-3 .c-rg-line-checked {
+  animation: my-line-anm3 1s infinite;
+}
+.my-line-style-4 .c-rg-line-checked {
+  animation: my-line-anm4 1s infinite;
+}
+
+@keyframes my-line-anm1 {
+  0% {
+    stroke-dashoffset: 352px;
+    stroke-dasharray: 5, 5, 5;
+  }
+  50% {
+    stroke-dasharray: 5, 5, 5;
+    stroke-dashoffset: 3px;
+  }
+  100% {
+    stroke-dashoffset: 352px;
+    stroke-dasharray: 5, 5, 5;
+  }
+}
+@keyframes my-line-anm2 {
+  from {
+    stroke-dashoffset: 0;
+    stroke-dasharray: 4, 4, 4;
+  }
+  to {
+    stroke-dashoffset: 10px;
+    stroke-dasharray: 20, 20, 20;
+  }
+}
+@keyframes my-line-anm3 {
+  0% {
+    stroke-opacity: 1;
+  }
+  50% {
+    stroke-opacity: 0.2;
+  }
+  100% {
+    stroke-opacity: 1;
+  }
+}
+@keyframes my-line-anm4 {
+  0% {
+    stroke-dasharray: 0, 100%;
+  }
+  100% {
+    stroke-dasharray: 100%, 0;
+  }
+}
