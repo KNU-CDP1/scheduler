@@ -91,8 +91,7 @@ const DashBoardTable: React.FC<DashBoardTableProps> = ({ schedules }) => {
               <Table.Cell>{data.weather}</Table.Cell>
               <Table.Cell>
                 <Progress.Root value={data.risk} w={"100%"} colorPalette={data.risk >= 50 ? "red" : "green"}>
-                  <Progress.ValueText>{data.risk}%</Progress.ValueText>
-
+                  <Progress.ValueText>{data.risk.toFixed(3)}%</Progress.ValueText>
                   <Progress.Track>
                     <Progress.Range />
                   </Progress.Track>

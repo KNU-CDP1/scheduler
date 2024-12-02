@@ -1,4 +1,4 @@
-import { Box, Card, Text, VStack, Slider, Flex, Stat, HStack, Button } from "@chakra-ui/react";
+import { Box, Card, Text, VStack, Slider, Flex, Stat, HStack, Button, Input } from "@chakra-ui/react";
 import React, { useEffect, useState } from "react";
 import { FiPlus, FiMinus } from "react-icons/fi";
 import { getScheduleParams, updateScheduleParams } from "../../../api/scheduleParams";
@@ -6,48 +6,62 @@ import { dummy } from "../../../config/config";
 
 const Setting: React.FC<{}> = () => {
   const [scheduleParams, setScheduleParams] = useState<ScheduleParams>(dummy.scheduleParams);
+  const [updateParams, setUpdateParams] = useState<ScheduleParams>(dummy.scheduleParams);
+  const [time, setTime] = useState<string>("");
 
   /*========================================================================*/
 
   const handleRiskAlpha = (ratio: number) => {
-    setScheduleParams({
-      ...scheduleParams,
+    setUpdateParams({
+      ...updateParams,
       riskAlpha: ratio,
     });
   };
 
   const handleCancelCost = (isUp: boolean) => {
     if (isUp) {
-      setScheduleParams({
-        ...scheduleParams,
-        cancelCost: scheduleParams.cancelCost + 1,
+      setUpdateParams({
+        ...updateParams,
+        cancelCost: updateParams.cancelCost + 1,
       });
-    } else if (!isUp && scheduleParams.cancelCost > 0) {
-      setScheduleParams({
-        ...scheduleParams,
-        cancelCost: scheduleParams.cancelCost - 1,
+    } else if (!isUp && updateParams.cancelCost > 0) {
+      setUpdateParams({
+        ...updateParams,
+        cancelCost: updateParams.cancelCost - 1,
       });
     }
   };
 
   const handleDelayCost = (isUp: boolean) => {
     if (isUp) {
-      setScheduleParams({
-        ...scheduleParams,
-        delayCost: scheduleParams.delayCost + 1,
+      setUpdateParams({
+        ...updateParams,
+        delayCost: updateParams.delayCost + 1,
       });
-    } else if (!isUp && scheduleParams.delayCost > 0) {
-      setScheduleParams({
-        ...scheduleParams,
-        delayCost: scheduleParams.delayCost - 1,
+    } else if (!isUp && updateParams.delayCost > 0) {
+      setUpdateParams({
+        ...updateParams,
+        delayCost: updateParams.delayCost - 1,
       });
     }
+  };
+
+  const handleDate = (date: string) => {
+    setUpdateParams({
+      ...updateParams,
+      time: new Date(date),
+    });
+  };
+
+  const formatDate: (date: Date) => string = (date) => {
+    return date.toISOString();
   };
 
   /*========================================================================*/
 
   useEffect(() => {
     getScheduleParams(setScheduleParams);
+    getScheduleParams(setUpdateParams);
   }, []);
 
   /*========================================================================*/
@@ -78,7 +92,9 @@ const Setting: React.FC<{}> = () => {
                     <Button onClick={() => handleCancelCost(true)}>
                       <FiPlus />
                     </Button>
-                    <Text>{scheduleParams.cancelCost} $</Text>
+                    <Text color={scheduleParams.cancelCost !== updateParams.cancelCost ? "red" : "inherit"}>
+                      {updateParams.cancelCost} $
+                    </Text>
                     <Button onClick={() => handleCancelCost(false)}>
                       <FiMinus />
                     </Button>
@@ -92,7 +108,9 @@ const Setting: React.FC<{}> = () => {
                     <Button onClick={() => handleDelayCost(true)}>
                       <FiPlus />
                     </Button>
-                    <Text>{scheduleParams.delayCost} $</Text>
+                    <Text color={scheduleParams.delayCost !== updateParams.delayCost ? "red" : "inherit"}>
+                      {updateParams.delayCost} $
+                    </Text>
                     <Button onClick={() => handleDelayCost(false)}>
                       <FiMinus />
                     </Button>
@@ -111,13 +129,15 @@ const Setting: React.FC<{}> = () => {
             <VStack w={"100%"} gap={4}>
               <Slider.Root
                 {...sliderStyleProps}
-                value={[scheduleParams.riskAlpha]}
+                value={[updateParams.riskAlpha]}
                 onValueChange={(e) => handleRiskAlpha(e.value[0])}
               >
                 <Slider.Label>
                   <Flex justifyContent={"space-between"}>
                     <Text>Risk / 위험도의 중요도</Text>
-                    <Text>{scheduleParams.riskAlpha}</Text>
+                    <Text color={scheduleParams.riskAlpha !== updateParams.riskAlpha ? "red" : "inherit"}>
+                      {updateParams.riskAlpha}
+                    </Text>
                   </Flex>
                 </Slider.Label>
                 <Slider.Control>
@@ -132,15 +152,44 @@ const Setting: React.FC<{}> = () => {
             </VStack>
           </Card.Body>
         </Card.Root>
+        <Card.Root w={"100%"} variant={"outline"}>
+          <Card.Header>
+            <Card.Title>Time</Card.Title>
+            <Card.Description>서버 시간을 설정합니다.</Card.Description>
+          </Card.Header>
+          <Card.Body>
+            <Flex>
+              <Stat.Root w={"50%"}>
+                <Stat.Label>현재 서버 시간</Stat.Label>
+                <Stat.ValueText
+                  color={scheduleParams.time.toISOString() !== updateParams.time.toISOString() ? "red" : "inherit"}
+                >
+                  {updateParams.time.toLocaleString()}
+                </Stat.ValueText>
+              </Stat.Root>
+              <Stat.Root w={"50%"}>
+                <Stat.Label>설정 시간 변경</Stat.Label>
+                <Stat.ValueText>
+                  <Input
+                    type={"datetime-local"}
+                    value={updateParams.time.toISOString()}
+                    onChange={(e) => handleDate(e.target.value)}
+                  />
+                </Stat.ValueText>
+              </Stat.Root>
+            </Flex>
+          </Card.Body>
+        </Card.Root>
+
         <Flex w={"100%"} justifyContent={"flex-end"}>
           <HStack>
             <Button
               _hover={{ color: "blue.300" }}
-              onClick={() => updateScheduleParams(scheduleParams, setScheduleParams)}
+              onClick={() => updateScheduleParams(updateParams, setScheduleParams)}
             >
               Apply / 적용하기
             </Button>
-            <Button _hover={{ color: "red.300" }} onClick={() => getScheduleParams(setScheduleParams)}>
+            <Button _hover={{ color: "red.300" }} onClick={() => getScheduleParams(setUpdateParams)}>
               Reset / 되돌리기
             </Button>
           </HStack>

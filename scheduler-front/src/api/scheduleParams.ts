@@ -5,8 +5,12 @@ import { createToaster } from "@chakra-ui/react";
 
 export const getScheduleParams = async (setScheduleParams: React.Dispatch<SetStateAction<ScheduleParams>>) => {
   try {
-    const resp = await axios.get(config.baseurl + "/api/scheduleParam");
-    setScheduleParams(resp.data);
+    const resp = await axios.get(config.baseurl + "/api/scheduleParam/settings");
+    const data: ScheduleParams = {
+      ...resp.data,
+      time: new Date(resp.data.time),
+    };
+    setScheduleParams(data);
   } catch (error) {
     if (isAxiosError(error)) {
       if (error.response) {
@@ -28,8 +32,18 @@ export const updateScheduleParams = async (
   setScheduleParams: React.Dispatch<SetStateAction<ScheduleParams>>,
 ) => {
   try {
-    const resp = await axios.patch(config.baseurl + "/api/scheduleParam", scheduleParam);
-    setScheduleParams(resp.data);
+    const body: ScheduleParamsApiRequest = {
+      ...scheduleParam,
+      time: scheduleParam.time.toISOString(),
+    };
+
+    const resp = await axios.patch(config.baseurl + "/api/scheduleParam", body);
+    const data: ScheduleParams = {
+      ...resp.data,
+      riskAlpha: resp.data.riskAlpha / 1000,
+      time: new Date(resp.data.time),
+    };
+    setScheduleParams(data);
   } catch (error) {
     if (isAxiosError(error)) {
       if (error.response) {

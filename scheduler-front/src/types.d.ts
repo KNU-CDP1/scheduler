@@ -1,4 +1,18 @@
 // response
+interface ScheduleParamsApiResponse {
+  delayCost: number;
+  cancelCost: number;
+  riskAlpha: number;
+  time: String;
+}
+
+interface ScheduleParamsApiRequest {
+  delayCost: number;
+  cancelCost: number;
+  riskAlpha: number;
+  time: string;
+}
+
 interface ScheduleApiResponse {
   passengers: number;
   adjustedDeparture: string;
@@ -10,6 +24,7 @@ interface ScheduleApiResponse {
   adjustedArrival: string;
   flightNumber: string;
   risk: number;
+  position: number;
   status: "Completed" | "In Flight" | "Delayed" | "Cancelled" | "Scheduled";
 }
 
@@ -35,6 +50,10 @@ interface FileUploadButtonProps {
   handleFiles: (f: File[]) => void;
 }
 
+interface MapProps {
+  schedules: Schedule[];
+}
+
 /*================================================================================================*/
 // data
 interface Schedule {
@@ -49,6 +68,7 @@ interface Schedule {
   adjustedArrival: Date;
   weather: string;
   risk: number;
+  position: number;
   status: "Completed" | "In Flight" | "Delayed" | "Cancelled" | "Scheduled";
 }
 interface ScheduleHistory {
@@ -63,4 +83,5 @@ interface ScheduleParams {
   delayCost: number;
   cancelCost: number;
   riskAlpha: number;
+  time: Date;
 }

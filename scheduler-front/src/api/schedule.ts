@@ -20,8 +20,9 @@ export const getSchedule = async (setSchedule: React.Dispatch<SetStateAction<Sch
         adjustedArrival: new Date(schedule.adjustedArrival),
         adjustedDeparture: new Date(schedule.adjustedDeparture),
         weather: schedule.weather,
-        risk: schedule.risk,
+        risk: schedule.risk * 100,
         status: schedule.status,
+        position: schedule.position,
       });
     }
 

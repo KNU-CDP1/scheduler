@@ -17,6 +17,12 @@ const DashBoard: React.FC<{}> = () => {
 
   useEffect(() => {
     getSchedule(setSchedules);
+
+    const timer = setInterval(() => {
+      getSchedule(setSchedules);
+    }, 10000);
+
+    return () => clearInterval(timer);
   }, []);
 
   /*========================================================================*/

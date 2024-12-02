@@ -2,86 +2,134 @@ import React, { useEffect, useRef } from "react";
 import RelationGraph, {
   RGJsonData,
   RGOptions,
-  RGNode,
-  RGLine,
-  RGLink,
-  RGUserEvent,
   RelationGraphComponent,
   RGNodeSlotProps,
+  JsonNode,
+  JsonLine,
 } from "relation-graph-react";
-// import CircumIcon from "./RGDemoComponents/MyDemoIcons";
 import "./flightMap.css";
-import { Box, Heading } from "@chakra-ui/react";
+import { Box, Card, Heading, Stat, Tooltip, VStack } from "@chakra-ui/react";
 
-const LineStyle1 = () => {
+const FlightMap: React.FC<MapProps> = ({ schedules }) => {
   const graphRef = useRef<RelationGraphComponent | null>(null);
 
   const graphOptions: RGOptions = {
     allowSwitchLineShape: true,
     allowSwitchJunctionPoint: true,
-    defaultLineColor: "rgba(255, 255, 255, 0.6)",
+    defaultLineColor: "rgba(238, 178, 94, 1)",
     defaultNodeColor: "transparent",
-    defaultNodeBorderWidth: 0,
+    defaultNodeBorderWidth: 3,
     defaultNodeBorderColor: "transparent",
     defaultNodeFontColor: "#ffffff",
     defaultNodeShape: 0,
-    toolBarDirection: "h",
-    toolBarPositionH: "right",
-    toolBarPositionV: "bottom",
     defaultPolyLineRadius: 10,
-    defaultLineShape: 6,
-    defaultJunctionPoint: "lr",
     lineUseTextPath: true,
     layout: {
-      layoutName: "tree",
-      from: "left",
-      min_per_width: 310,
-      min_per_height: 70,
+      layoutName: "fixed",
     },
   };
 
   useEffect(() => {
-    showGraph();
-  }, []);
+    showGraph(schedules);
+  }, [schedules]);
 
-  const showGraph = async () => {
-    const __graph_json_data: RGJsonData = {
-      rootId: "a",
-      nodes: [
-        { id: "a", text: "a", data: { icon: "football" } },
-        { id: "b", text: "b", data: { icon: "fries" } },
-        { id: "b1", text: "b1", data: { icon: "fries" } },
-        { id: "b2", text: "b2", data: { icon: "fries" } },
-        { id: "b2-1", text: "b2-1", data: { icon: "fries" } },
-        { id: "b2-2", text: "b2-2", data: { icon: "fries" } },
-        { id: "c", text: "c", data: { icon: "delivery_truck" } },
-        { id: "c1", text: "c1", data: { icon: "delivery_truck" } },
-        { id: "c2", text: "c2", data: { icon: "delivery_truck" } },
-        { id: "c3", text: "c3", data: { icon: "delivery_truck" } },
-      ],
-      lines: [
-        { from: "a", to: "b", text: "虚线1", dashType: 1 },
-        { from: "b", to: "b1", text: "虚线2", dashType: 2 },
-        { from: "b", to: "b2", text: "虚线3", dashType: 3 },
-        { from: "b2", to: "b2-1", text: "虚线4", dashType: 4 },
-        { from: "b2", to: "b2-2", text: "正常线条" },
-        { from: "a", to: "c", text: "线条动画1", animation: 1 },
-        { from: "c", to: "c1", text: "线条动画2", animation: 2 },
-        { from: "c", to: "c2", text: "线条动画3", animation: 3 },
-        { from: "c", to: "c3", text: "线条动画4", animation: 4 },
-      ],
+  const showGraph = async (schedules: Schedule[]) => {
+    schedules = schedules
+      .filter((val) => val.position < 100)
+      .sort((a, b) => {
+        return a.position - b.position;
+      });
+
+    const nodes: JsonNode[] = [];
+    const lines: JsonLine[] = [];
+
+    for (let index = 0; index < schedules.length; index++) {
+      const schedule = schedules[index];
+
+      let row = Math.trunc(index / 4);
+      let col = index % 4;
+      if (row % 2 === 1) {
+        col = 3 - col;
+      }
+
+      nodes.push({
+        id: schedule.id.toString(),
+        text: schedule.flightNumber,
+        x: col * 200,
+        y: row * 200,
+        data: {
+          schedule: schedule,
+        },
+      });
+    }
+
+    for (let index = 1; index < nodes.length; index++) {
+      const from = nodes[index - 1];
+      const to = nodes[index];
+
+      lines.push({
+        from: from.id,
+        to: to.id,
+        text: (to.data?.schedule.position - from.data?.schedule.position).toFixed(2).toString(),
+        animation: 1,
+        lineShape: 1,
+      });
+    }
+
+    const graphData: RGJsonData = {
+      rootId: nodes[0].id,
+      nodes: nodes,
+      lines: lines,
     };
 
     const graphInstance = graphRef.current?.getInstance();
-    await graphInstance?.setJsonData(__graph_json_data);
+    await graphInstance?.setJsonData(graphData);
     await graphInstance?.moveToCenter();
     await graphInstance?.zoomToFit();
   };
 
   const NodeSlot: React.FC<RGNodeSlotProps> = ({ node }) => {
     return (
-      <div className="c-round" style={{ width: "70px", height: "70px" }}>
-        <Heading>{node.id}</Heading>
+      <div>
+        <Tooltip.Root openDelay={200}>
+          <Tooltip.Trigger disabled>
+            <Heading>{node.text}</Heading>
+          </Tooltip.Trigger>
+          <Tooltip.Positioner>
+            <Tooltip.Content w={"fit-content"}>
+              <Card.Root>
+                <Card.Header>
+                  <Heading>{node.text} 항공편</Heading>
+                </Card.Header>
+                <Card.Body w={"fit-content"}>
+                  <VStack alignItems={"flex-start"}>
+                    <Stat.Root>
+                      <Stat.Label>Position</Stat.Label>
+                      <Stat.HelpText>현재 위치</Stat.HelpText>
+                      <Stat.ValueText fontSize={"lg"}>
+                        현재 {node.data?.schedule.position.toFixed(2)}% 지점 지나는 중...
+                      </Stat.ValueText>
+                    </Stat.Root>
+                    <Stat.Root>
+                      <Stat.Label>Departure</Stat.Label>
+                      <Stat.HelpText>출발 시간</Stat.HelpText>
+                      <Stat.ValueText fontSize={"lg"}>
+                        {node.data?.schedule.adjustedDeparture.toUTCString()}
+                      </Stat.ValueText>
+                    </Stat.Root>
+                    <Stat.Root>
+                      <Stat.Label>Arrival</Stat.Label>
+                      <Stat.HelpText>예상 도착 시간</Stat.HelpText>
+                      <Stat.ValueText fontSize={"lg"}>
+                        {node.data?.schedule.adjustedArrival.toUTCString()}
+                      </Stat.ValueText>
+                    </Stat.Root>
+                  </VStack>
+                </Card.Body>
+              </Card.Root>
+            </Tooltip.Content>
+          </Tooltip.Positioner>
+        </Tooltip.Root>
       </div>
     );
   };
@@ -92,4 +140,4 @@ const LineStyle1 = () => {
     </Box>
   );
 };
-export default LineStyle1;
+export default FlightMap;

@@ -1,6 +1,6 @@
 export const config = {
-  // baseurl: "http://119.201.71.174:8080",
-  baseurl: "http://localhost:8080",
+  baseurl: "http://119.201.71.174:8080",
+  // baseurl: "http://localhost:8080",
 };
 
 interface Dummy {
@@ -14,6 +14,7 @@ export const dummy: Dummy = {
     riskAlpha: 20,
     cancelCost: 20,
     delayCost: 20,
+    time: new Date(),
   },
 
   schedule: {
@@ -28,6 +29,7 @@ export const dummy: Dummy = {
     adjustedArrival: new Date(),
     weather: "Sunny",
     risk: 20,
+    position: 0,
     status: "Delayed",
   },
 
